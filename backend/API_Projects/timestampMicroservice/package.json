@@ -1,0 +1,14 @@
+{
+  "name": "timestampmicroservice",
+  "version": "1.0.0",
+  "description": "full stack javascript timestamp microservice for freecodecamp",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "mdbeauche",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
