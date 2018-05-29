@@ -101,7 +101,7 @@ app.get('/:shortUrl([0-9]*)', (req, res) => {
     db.collection('urlShortener').findOne(query, (err, result) => {
       if (err) {
         res.send('<p>Error accessing mongoDB collection: ' +  err + '</p>')
-        db.close()
+        client.close()
         return
       }
 
