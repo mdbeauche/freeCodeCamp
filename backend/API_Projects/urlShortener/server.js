@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 // route for shortening urls
 app.get('/:url([A-Za-z]*)', (req, res) => {
   // validate url
-  let urlMatch = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+  let urlMatch = /(http(s)?:\/\/.)(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
   if (!urlMatch.test(req.params.url)) {
     res.send('<p>Invalid url format. Example:</p><code>' +
