@@ -1,0 +1,14 @@
+{
+  "name": "requestheaderparser",
+  "version": "1.0.0",
+  "description": "microservice to view certain request headers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "mdbeauche",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
