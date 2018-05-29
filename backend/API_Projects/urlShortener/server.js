@@ -9,8 +9,7 @@ const mongoUri = process.env.MONGOLAB_URI
 const mongodb = require('mongodb')
 const mongoClient = mongodb.MongoClient
 
-//const glitchUri = process.env.GLITCH_URI
-const glitchUri = 'http://localhost:8080/'
+const glitchUri = process.env.GLITCH_URI
 
 const express = require('express')
 const app = express()
