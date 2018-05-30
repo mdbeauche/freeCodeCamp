@@ -1,0 +1,17 @@
+{
+  "name": "imagesearchabstractionlayer",
+  "version": "1.0.0",
+  "description": "search google images and return paginated data in json",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "mdbeauche",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.0-beta4",
+    "request": "^2.87.0"
+  }
+}

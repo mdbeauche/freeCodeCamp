@@ -85,7 +85,6 @@ app.get('/:url([A-Za-z]*)', (req, res) => {
 
 // route for shortened urls
 app.get('/:shortUrl([0-9]*)', (req, res) => {
-  console.log(req.params.shortUrl)
   // connect to database
   mongoClient.connect(mongoUri, (err, client) => {
     if (err) {
@@ -120,7 +119,7 @@ app.get('/:shortUrl([0-9]*)', (req, res) => {
   })
 })
 
-// port is 8080 is default for non-administrator web server
+// port 8080 is default for non-administrator web server
 app.listen(8080, function() {
   console.log('URL shortener listening on port 8080...')
 })
