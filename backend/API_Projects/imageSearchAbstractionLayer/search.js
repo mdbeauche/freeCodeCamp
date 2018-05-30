@@ -3,15 +3,18 @@
 const request = require('request')
 
 const options = {
-    url: 'https://www.reddit.com/r/funny.json',
+    url: 'googlecustomsearchurl',
     method: 'GET',
     headers: {
         'Accept': 'application/json',
         'Accept-Charset': 'utf-8',
-        'User-Agent': 'my-reddit-client'
+        'User-Agent': 'googleuseragent'
     }
 }
 
+// usage: request(options, callback)
+
+// TODO: implement search
 // TODO: implement offset
 
 module.exports = function(query, offset, callback) {
