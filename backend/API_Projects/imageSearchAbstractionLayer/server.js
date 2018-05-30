@@ -1,6 +1,7 @@
 // image search abstraction layer for freeCodeCamp.org backend project
 // https://www.freecodecamp.org/challenges/image-search-abstraction-layer
 
+// get glitch.com hosting uri
 const dotenv = require('dotenv')
 dotenv.config()
 const glitchUri = process.env.GLITCH_URI
@@ -31,8 +32,10 @@ app.get('/search/:query', (req, res) => {
     return
   }
 
+  let offset = req.query.offset ? '?offset=' + req.query.offset : ''
+
   // add search term to history
-  database.addSearch(req.params.query + req.query.offset, (err, data) => {
+  database.addSearch(req.params.query + offset, (err, data) => {
     if (err) {
       res.send(err)
       return
@@ -46,7 +49,7 @@ app.get('/search/:query', (req, res) => {
       return
     }
 
-    res.send(JSON.stringify(data))
+    res.send(data)
   })
 
 })
@@ -60,7 +63,7 @@ app.get('/history', (req, res) => {
       return
     }
 
-    res.send(JSON.stringify(data))
+    res.send(data)
   })
 })
 

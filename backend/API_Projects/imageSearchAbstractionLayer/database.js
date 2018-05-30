@@ -2,7 +2,6 @@
 const dotenv = require('dotenv')
 dotenv.config()
 const mongoUri = process.env.MONGOLAB_URI
-const glitchUri = process.env.GLITCH_URI
 
 const mongodb = require('mongodb')
 const mongoClient = mongodb.MongoClient
