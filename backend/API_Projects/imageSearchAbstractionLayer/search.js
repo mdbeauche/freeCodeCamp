@@ -11,6 +11,7 @@ const GOOGLE_API_CX = process.env.GOOGLE_API_CX
 // npm module for http requests
 const request = require('request')
 
+// query a Google Custom Search Engine for Images
 module.exports = function(query, offset, callback) {
 
   let search = url.parse(GOOGLE_API_SEARCH)
@@ -20,8 +21,8 @@ module.exports = function(query, offset, callback) {
     start: offset ? parseInt(offset) : 1,
     cx: GOOGLE_API_CX,
     key: GOOGLE_API_KEY,
-    searchType: 'image',
-    fields: 'items(image(contextLink,thumbnailLink),link,snippet)'
+    searchType: "image",
+    fields: "items(image(contextLink,thumbnailLink),link,snippet)"
   }
 
   search = url.format(search)
@@ -41,15 +42,13 @@ module.exports = function(query, offset, callback) {
     var images = []
     if (data && data.items.length) {
       images = data.items.map(item => {
-        let obj = { url: item.link ? item.link : '',
+        return { url: item.link ? item.link : '',
           snippet: item.snippet ? item.snippet : '',
           thumbnail: item.image && item.image.thumbnailLink ?
             item.image.thumbnailLink : '',
           context: item.image && item.image.contextLink ?
             item.image.contextLink : ''
         }
-
-        return obj
       })
     }
 
