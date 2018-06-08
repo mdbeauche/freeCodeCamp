@@ -13,9 +13,10 @@ class Presentational extends React.Component {
     this.reset = this.reset.bind(this);
   }
   handleChange(event) {
+    let markdownText = marked(event.target.value, { sanitize: true });
     this.setState({
       input: event.target.value,
-      markdown: marked(event.target.value, { sanitize: true })
+      markdown: markdownText
     });
   }
   reset() {
