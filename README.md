@@ -3,7 +3,7 @@
 This repo contains a listing of some of my completed frontend and backend freeCodeCamp projects. For other projects, see my [codepen.io portfolio](https://codepen.io/mdbeauche/#) (HTML, CSS, Bootstrap, JavaScript, jQuery).
 
 ## frontend/libraries/markdownPreviewer
-### Technologies used: HTML, CSS, JavaScript, React
+### Technologies used: HTML, CSS, JavaScript, marked, React
 * [freeCodeCamp Challenge](https://learn.freecodecamp.org/front-end-libraries/front-end-libraries-projects/build-a-markdown-previewer)
 * [my project on codepen.io](https://codepen.io/mdbeauche/full/yEVYPJ/)
 * User Story: When I enter text into the #editor element, the #preview element is updated as I type to display the content of the textarea.
