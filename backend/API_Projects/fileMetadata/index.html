@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8"/>
+<head>
+  <title>
+    File Metadata Microservice
+  </title>
+</head>
+<body>
+  <header>
+    <h1>API Project: File Metadata Microserve</h1>
+  </header>
+  <main>
+    <section>
+      <h2>User Stories:</h2>
+        <ul>
+          <li>I can submit a form object that includes a file upload.</li>
+          <li>The from file input field has the "name" attribute set to "upfile".</li>
+          <li>When I submit something, I will receive the file name, and size in bytes within the JSON response.</li>
+        </ul>
+    </section>
+    <form id="fileupload" enctype="multipart/form-data" method="POST" action="/api/fileUpload">
+      <fieldset form="fileupload">
+        <legend>File Upload</legend>
+        <label for="inputfield" id="inputlabel">File: </label>
+        <input id="inputfield" type="file" name="upfile">
+        <input id="button" type="submit" value="Get File Metadata">
+      </fieldset>
+    </form>
+  </main>
+</body>
+</html>

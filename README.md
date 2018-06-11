@@ -33,3 +33,10 @@
 * User Story: I can get the image URLs, alt text and page urls for a set of images relating to a given search string.
 * User Story: I can paginate through the responses by adding a ?offset=2 parameter to the URL.
 * User Story: I can get a list of the most recently submitted search strings.
+
+## backend/API_Projects/filemetadata
+* [freeCodeCamp Challenge](https://learn.freecodecamp.org/apis-and-microservices/apis-and-microservices-projects/file-metadata-microservice/)
+* [my project on glitch.com](https://useful-alligator.glitch.me/)
+* User Story: I can submit a form object that includes a file upload.
+* User Story: The from file input field has the "name" attribute set to "upfile". We rely on this in testing.
+* User Story: When I submit something, I will receive the file name, and size in bytes within the JSON response.
