@@ -8,6 +8,10 @@ const app = express()
 
 const database = require('./database.js')
 
+// body-parser functionality now in default express
+// parse incoming requests, use qs library
+app.use(express.urlencoded({ extended: true }))
+
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/index.html')
 })

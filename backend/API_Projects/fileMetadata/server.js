@@ -21,7 +21,6 @@ const upload = multer({storage: storage})
 
 // parse post information
 app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + '/index.html')
