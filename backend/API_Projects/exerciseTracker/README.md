@@ -1,7 +1,7 @@
 # exerciseTracker
 ## Technologies used: HTML, CSS, JavaScript, Node.js, dotenv, Express, MongoDB
 * [freeCodeCamp Challenge](https://learn.freecodecamp.org/apis-and-microservices/apis-and-microservices-projects/exercise-tracker)
-* [my project on glitch.com]()
+* [my project on glitch.com](https://scythe-decimal.glitch.me/)
 * User Story: I can create a user by posting form data username to /api/exercise/new-user and returned will be an object with username and \_id.
 * User Story: I can get an array of all users by getting api/exercise/users with the same info as when creating a user.
 * User Story: I can add an exercise to any user by posting form data userId(\_id), description, duration, and optionally date to /api/exercise/add. If no date supplied it will use current date. Returned will be the user object with also with the exercise fields added.
