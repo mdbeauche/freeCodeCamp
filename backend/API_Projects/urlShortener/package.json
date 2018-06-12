@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Michael Beauchemin",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^5.0.1",
