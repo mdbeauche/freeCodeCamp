@@ -6,7 +6,7 @@ const mongoUri = process.env.MONGOLAB_URI
 const mongodb = require('mongodb')
 const mongoClient = mongodb.MongoClient
 
-// add a user to the database
+// add a user to the database, return object {username, id}
 exports.addUser = function(user, callback) {
   // connect to database
   mongoClient.connect(mongoUri, (err, client) => {
@@ -18,20 +18,36 @@ exports.addUser = function(user, callback) {
     // connection established
     let db = client.db('projects')
 
-    let obj = {  }
-
-    // add user to databse
-    db.collection('exerciseTracker').insertOne(obj, (err, res) => {
+    // if user already exists in database, return user object
+    db.collection('exerciseTracker').findOne({ username: user }, (err, res) => {
       if (err) {
         client.close()
-        return callback('<p>Error inserting into mongoDB collection: ' + err +
+        return callback('<p>Error searching MongoDB collection: ' + err +
           '</p>')
       }
 
-      // close connection
-      client.close()
+      if (res) {
+        // user exists, return record
+        client.close()
 
-      return callback(null, res)
+        return callback(null, res)
+      } else {
+        // user doesn't exist, add new user and return record
+        db.collection('exerciseTracker').insertOne({ username: user }, (err, res) => {
+          if (err) {
+            client.close()
+            return callback('<p>Error inserting into MongoDB collection: ' + err +
+              '</p>')
+          }
+
+          // close connection
+          client.close()
+
+          // res.ops contains array of objects added
+          return callback(null, res.ops[0])
+        })
+
+      }
     })
   })
 }
@@ -48,8 +64,8 @@ exports.getUsers = function(callback) {
     // connection established
     let db = client.db('projects')
 
-    // add search term to history db
-    db.collection('exerciseTracker').find({}).toArray((err, res) => {
+    // search for all users, only return username field (and _id by default)
+    db.collection('exerciseTracker').find({}, { username: 1 }).toArray((err, res) => {
       if (err) {
         client.close()
         return callback('<p>Error inserting into MongoDB collection: ' + err +
@@ -65,7 +81,8 @@ exports.getUsers = function(callback) {
 }
 
 // get a user's exercise log
-exports.getExerciseLog = function(user, exercise, callback) {
+exports.getExerciseLog = function(userInfo, callback) {
+  // userInfo { userID, from, to, limit }
   // connect to database
   mongoClient.connect(mongoUri, (err, client) => {
     if (err) {
@@ -76,13 +93,13 @@ exports.getExerciseLog = function(user, exercise, callback) {
     // connection established
     let db = client.db('projects')
 
-    let search = { user: user }
-
-    // add search term to history db
-    db.collection('exerciseTracker').findOne(search).toArray((err, res) => {
+    // search collection for exercise log
+    // convert userID to MongoDB ObjectID
+    // only return exercises array
+    db.collection('exerciseTracker').findOne({ _id: mongodb.ObjectID(userInfo.userID) }, (err, res) => {
       if (err) {
         client.close()
-        return callback('<p>Error inserting into MongoDB collection: ' + err +
+        return callback('<p>Error searching MongoDB collection: ' + err +
           '</p>')
       }
 
@@ -95,7 +112,7 @@ exports.getExerciseLog = function(user, exercise, callback) {
 }
 
 // add exercise to user's log
-exports.addExercise = function(user, callback) {
+exports.addExercise = function(userID, exerciseInfo, callback) {
   // connect to database
   mongoClient.connect(mongoUri, (err, client) => {
     if (err) {
@@ -106,13 +123,14 @@ exports.addExercise = function(user, callback) {
     // connection established
     let db = client.db('projects')
 
-    let obj = {  }
-
     // add exercise to database
-    db.collection('exerciseTracker').insertOne(obj, (err, res) => {
+    // must convert _id string to MongoDB ObjectID
+    // use $push to add to exercises array
+    db.collection('exerciseTracker').update({ _id: mongodb.ObjectID(userID) },
+      { $push: { exercises: exerciseInfo } }, (err, res) => {
       if (err) {
         client.close()
-        return callback('<p>Error inserting into mongoDB collection: ' + err +
+        return callback('<p>Error inserting into MongoDB collection: ' + err +
           '</p>')
       }
 
