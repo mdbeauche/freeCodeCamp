@@ -33,7 +33,7 @@ exports.addUser = function(user, callback) {
         return callback(null, res)
       } else {
         // user doesn't exist, add new user and return record
-        db.collection('exerciseTracker').insertOne({ username: user }, (err, res) => {
+        db.collection('exerciseTracker').insertOne({ username: user, count: 0 }, (err, res) => {
           if (err) {
             client.close()
             return callback('<p>Error inserting into MongoDB collection: ' + err +
@@ -65,7 +65,7 @@ exports.getUsers = function(callback) {
     let db = client.db('projects')
 
     // search for all users, only return username field (and _id by default)
-    db.collection('exerciseTracker').find({}, { username: 1 }).toArray((err, res) => {
+    db.collection('exerciseTracker').find({}).project({ username: 1 }).toArray((err, res) => {
       if (err) {
         client.close()
         return callback('<p>Error inserting into MongoDB collection: ' + err +
@@ -94,8 +94,7 @@ exports.getExerciseLog = function(userInfo, callback) {
     let db = client.db('projects')
 
     // search collection for exercise log
-    // convert userID to MongoDB ObjectID
-    // only return exercises array
+    // must convert userID to MongoDB ObjectID
     db.collection('exerciseTracker').findOne({ _id: mongodb.ObjectID(userInfo.userID) }, (err, res) => {
       if (err) {
         client.close()
@@ -106,7 +105,49 @@ exports.getExerciseLog = function(userInfo, callback) {
       // close connection
       client.close()
 
-      return callback(null, res)
+      // build results
+      let results = { _id: res._id, username: res.username, log: [] }
+      // if date to, date from, or limit are specified, curate results
+      if (userInfo.from && userInfo.to) {
+        // curate based on date, use Date.getTime() to compare ms values
+        let limit = userInfo.limit ? userInfo.limit : res.log.length
+        let dateFrom = new Date(userInfo.from).getTime()
+        let dateTo = new Date(userInfo.to).getTime()
+        let log = res.log.slice()
+
+        while (limit > 0) {
+          // search log for an entry within the date time frame
+          for (let i = 0; i < log.length; i++) {
+            let currDate = new Date(log[i].date).getTime()
+
+            if (currDate >= dateFrom && currDate <= dateTo) {
+              results.log = results.log.concat( log.splice(i,1) )
+              break
+            }
+          }
+
+          limit--
+        }
+
+        return callback(null, results)
+      } else {
+        if (userInfo.limit) {
+          // curate based on limit
+          let log = res.log.slice()
+          let limit = userInfo.limit
+
+          while (limit > 0) {
+            results.log.push(log.shift())
+            limit--
+          }
+
+          return callback(null, results)
+        } else {
+          // don't curate
+          return callback(null, res)
+        }
+      }
+
     })
   })
 }
@@ -125,19 +166,30 @@ exports.addExercise = function(userID, exerciseInfo, callback) {
 
     // add exercise to database
     // must convert _id string to MongoDB ObjectID
-    // use $push to add to exercises array
+    // use $push to add to log array
+    // use $inc to increment count
     db.collection('exerciseTracker').update({ _id: mongodb.ObjectID(userID) },
-      { $push: { exercises: exerciseInfo } }, (err, res) => {
+      { $push: { log: exerciseInfo }, $inc: { 'count': 1 } }, (err, res) => {
       if (err) {
         client.close()
         return callback('<p>Error inserting into MongoDB collection: ' + err +
           '</p>')
       }
 
-      // close connection
-      client.close()
+      // object returned from update is only a description of update operation
+      // query for user object to return new user object with updated exercises
+      db.collection('exerciseTracker').findOne({ _id: mongodb.ObjectID(userID)}, (err, res) => {
+        if (err) {
+          client.close()
+          return callback('<p>Error searching MongoDB collection: ' + err +
+            '</p>')
+        }
 
-      return callback(null, res)
+        // close connection
+        client.close()
+
+        return callback(null, res)
+      })
     })
   })
 }

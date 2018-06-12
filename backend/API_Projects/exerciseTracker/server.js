@@ -34,7 +34,7 @@ app.post("/api/exercise/new-user", (request, response) => {
   }
 })
 
-// get an array of all user objects {username, id}
+// get an array of all user objects {username, _id}
 // GET /api/exercise/users
 app.get("/api/exercise/users", (request, response) => {
   // database.getUsers(callback)
@@ -51,8 +51,9 @@ app.get("/api/exercise/users", (request, response) => {
 // get a users's exercise log from form data
 app.post("/api/exercise/log", (request, response) => {
   // form data
+  // dates: YYYY-MM-DD
   let userInfo = {
-    userID: request.body['get-exercise-log-user'],
+    userID: request.body['get-exercise-log-user-id'],
     from: request.body['get-exercise-date-from'],
     to: request.body['get-exercise-date-to'],
     limit: request.body['get-exercise-date-limit']
@@ -70,9 +71,29 @@ app.post("/api/exercise/log", (request, response) => {
 
 // get a user's exercise log from url query string
 // GET /api/exercise/log?{userId}[&from][&to][&limit]
-app.get("/api/exercise/log:userId", (request, response) => {
+app.get("/api/exercise/log", (request, response) => {
+  if (!request.query.userId) {
+    response.send('<p>Error: must specify userId. Format: <code>GET ' +
+      '/api/exercise/log?userId={userId}[&from={YYYY-MM-DD}][&to={YYYY-MM-DD}]'
+      + '[&limit={limit}]</code></p>')
+    return
+  }
 
-  // database.getExerciseLog(user, callback)
+  let userInfo = {
+    userID: request.query.userId,
+    from: request.query.from,
+    to: request.query.to,
+    limit: request.query.limit
+  }
+
+  database.getExerciseLog(userInfo, (err, data) => {
+    if (err) {
+      response.send(err)
+      return
+    }
+
+    response.send(data)
+  })
 })
 
 // add exercises from form data
@@ -83,7 +104,7 @@ app.post("/api/exercise/add", (request, response) => {
   let exerciseInfo = {
     description: request.body['add-exercise-description'],
     duration: request.body['add-exercise-duration'],
-    date: request.body['add-exercise-date']
+    date: request.body['add-exercise-date'] ? new Date(request.body['add-exercise-date']) : new Date()
   }
 
   database.addExercise(userID, exerciseInfo, (err, data) => {

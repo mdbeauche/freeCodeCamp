@@ -44,7 +44,7 @@
           <legend>
             Get a list of all users
           </legend>
-          <button id="get-users" type="submit">Get Users</button>
+          <button id="get-users-btn" type="submit">Get Users</button>
           <code>GET /api/exercise/users</code>
         </fieldset>
       </form>
@@ -70,9 +70,9 @@
           <label for="add-exercise-date">
             Date:
           </label>
-          <input id="add-exercise-date" name="add-exercise-date" type="date" /required >
+          <input id="add-exercise-date" name="add-exercise-date" type="date" />
           <br>
-          <button id="add-exercise" type="submit">Add Exercise</button>
+          <button id="add-exercise-btn" type="submit">Add Exercise</button>
           <code>POST /api/exercise/add</code>
         </fieldset>
       </form>
@@ -83,10 +83,10 @@
           <legend>
             View a user's exercise log
           </legend>
-          <label for="get-exercise-log-user">
+          <label for="get-exercise-log-user-id">
             User ID:
           </label>
-          <input id="get-exercise-log-user" name="get-exercise-log-user" type="text" required />
+          <input id="get-exercise-log-user-id" name="get-exercise-log-user-id" type="text" required />
           <label for="get-exercise-date-from">
             Date From:
           </label>
@@ -100,7 +100,7 @@
           </label>
           <input id="get-exercise-date-limit" name="get-exercise-date-limit" type="number" />
           <br>
-          <button id="get-exercise-log" type="submit">View log</button>
+          <button id="get-exercise-log-btn" type="submit">View log</button>
           <code>GET /api/exercise/log?{userId}[&from][&to][&limit]</code>
         </fieldset>
       </form>
